@@ -36,6 +36,7 @@ import java.util.Locale;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.HONEYCOMB;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN;
+import static android.text.format.Formatter.formatShortFileSize;
 import static com.squareup.leakcanary.LeakCanary.leakInfo;
 import static com.squareup.leakcanary.internal.LeakCanaryInternals.classSimpleName;
 
@@ -73,10 +74,12 @@ public class DisplayLeakService extends AbstractAnalysisResultService {
       if (result.failure == null) {
         if (result.excludedLeak) {
           contentTitle =
-              getString(R.string.leak_canary_leak_excluded, classSimpleName(result.className));
+              getString(R.string.leak_canary_leak_excluded, classSimpleName(result.className),
+                  formatShortFileSize(this, result.retainedHeapSize));
         } else {
           contentTitle =
-              getString(R.string.leak_canary_class_has_leaked, classSimpleName(result.className));
+              getString(R.string.leak_canary_class_has_leaked, classSimpleName(result.className),
+                  formatShortFileSize(this, result.retainedHeapSize));
         }
       } else {
         contentTitle = getString(R.string.leak_canary_analysis_failed);
